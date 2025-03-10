@@ -1,0 +1,55 @@
+trainer:
+  target: semanticist.engine.diffusion_trainer.DiffusionTrainer
+  params:
+    num_epoch: 400
+    valid_size: 64
+    blr: 2.5e-5
+    cosine_lr: True
+    warmup_epochs: 100
+    batch_size: 256
+    num_workers: 16
+    pin_memory: True
+    grad_accum_steps: 1
+    precision: 'bf16'
+    max_grad_norm: 3.0
+    enable_ema: True
+    save_every: 10000
+    sample_every: 5000
+    fid_every: 50000
+    result_folder: "./output/tokenizer/models_l"
+    log_dir: "./output/tokenizer/models_l/logs"
+    cfg: 3.0
+    compile: True
+    model:
+      target: semanticist.stage1.diffuse_slot.DiffuseSlot
+      params:
+        encoder: 'vit_base_patch16'
+        enc_img_size: 256
+        enc_causal: True
+        enc_use_mlp: False
+        num_slots: 256
+        slot_dim: 16
+        norm_slots: True
+        dit_model: 'DiT-L-2'
+        vae: 'xwen99/mar-vae-kl16'
+        enable_nest: False
+        enable_nest_after: 50
+        use_repa: True
+        eval_fid: True
+        fid_stats: 'fid_stats/adm_in256_stats.npz'
+        num_sampling_steps: '250'
+        ckpt_path: None
+
+    dataset:
+      target: semanticist.utils.datasets.ImageNet
+      params:
+        root: ./dataset/imagenet/
+        split: train
+        img_size: 256
+
+    test_dataset:
+      target: semanticist.utils.datasets.ImageNet
+      params:
+        root: ./dataset/imagenet/
+        split: val
+        img_size: 256
