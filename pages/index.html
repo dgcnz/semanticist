@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semanticist: PCA-Guided Visual Tokenization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Semanticist: PCA-Guided Visual Tokenization with Structured Latents</h1>
+    <h3>A New Paradigm for Compact and Interpretable Image Representations</h3>
+    <p>
+        <a href="#">[Read the Paper]</a> &nbsp; | &nbsp;
+        <a href="#">[GitHub]</a> &nbsp; | &nbsp;
+        <a href="#">[Colab Demo]</a>
+    </p>
+
+    <div class="section">
+        <h2>Introduction & Motivation</h2>
+        <p>Deep generative models have revolutionized image synthesis, but how we tokenize visual data remains an open question. While classical methods like <b>Principal Component Analysis (PCA)</b> introduced compact, structured representations, modern <b>visual tokenizers</b>—from <b>VQ-VAE</b> to <b>latent diffusion models</b>—often prioritize <b>reconstruction fidelity</b> at the cost of interpretability and efficiency.</p>
+        <h3>The Problem</h3>
+        <ul>
+            <li><b>Lack of Structure:</b> Tokens are arbitrarily learned, without an ordering that prioritizes important visual features first.</li>
+            <li><b>Semantic-Spectrum Coupling:</b> Tokens entangle <i>high-level semantics</i> with <i>low-level spectral details</i>, leading to inefficiencies in downstream applications.</li>
+        </ul>
+        <p>Can we design a <b>compact, structured tokenizer</b> that retains the benefits of PCA while leveraging modern generative techniques?</p>
+    </div>
+
+    <div class="section">
+        <h2>Key Contributions (What’s New?)</h2>
+        <ul>
+            <li><b>📌 PCA-Guided Tokenization:</b> Introduces a <i>causal ordering</i> where earlier tokens capture the most important visual details, reducing redundancy.</li>
+            <li><b>⚡ Semantic-Spectrum Decoupling:</b> Resolves the issue of semantic-spectrum coupling to ensure tokens focus on high-level semantic information.</li>
+            <li><b>🌀 Diffusion-Based Decoding:</b> Uses a <i>spectral autoregressive diffusion decoder</i> to naturally separate semantic and spectral content.</li>
+            <li><b>🚀 Compact & Interpretability-Friendly:</b> Enables <i>flexible token selection</i>, where fewer tokens can still yield high-quality reconstructions.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Visualizing the Problem: Semantic-Spectrum Coupling</h2>
+        <p>Existing methods fail to separate <b>semantics from spectral details</b>, leading to inefficiencies in token usage.</p>
+        <ul>
+            <li><b>🚨 Current Tokenizers:</b> More tokens simultaneously increase both <i>semantic content</i> and <i>low-level spectral details</i>, making compression inefficient.</li>
+            <li><b>✅ Our Approach:</b> Tokens capture <i>semantics first</i>, ensuring a <i>coarse-to-fine</i> hierarchical structure.</li>
+        </ul>
+        <p><b>📊 Power Spectrum Analysis (Visual)</b><br>➡️ <i>[Insert a figure similar to your spectral analysis plot]</i></p>
+        <p><b>🖼 Comparison of Reconstructions</b><br>➡️ <i>[Insert a figure comparing VQ-VAE, TiTok, and Semanticist reconstructions at different token levels]</i></p>
+    </div>
+</body>
+</html>
