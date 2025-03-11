@@ -39,6 +39,7 @@ class GPTTrainer(nn.Module):
         warmup_epochs=100,
         warmup_steps=None,
         warmup_lr_init=0,
+        decay_steps=None,
         batch_size=32,
         cache_bs=8,
         test_bs=100,
@@ -137,6 +138,7 @@ class GPTTrainer(nn.Module):
                 lr_min,
                 warmup_steps,
                 warmup_lr_init,
+                decay_steps,
                 cosine_lr
             )
             self.accelerator.register_for_checkpointing(self.g_sched)
