@@ -1,7 +1,7 @@
 import os.path as osp
 import argparse
 from omegaconf import OmegaConf
-from semanticist.engine.util import instantiate_from_config
+from semanticist.engine.trainer_utils import instantiate_from_config
 from semanticist.utils.device_utils import configure_compute_backend
 
 def train():

@@ -28,6 +28,7 @@ class DiT_with_autoenc_cond(DiT):
         torch.nn.init.normal_(self.null_cond, std=.02)
         self.autoenc_cond_embedder = nn.Linear(autoenc_dim, self.hidden_size)
         self.y_embedder = nn.Identity()
+        self.cond_drop_prob = 0.1
         
         self.use_repa = use_repa
         self._repa_hook = None
@@ -39,7 +40,21 @@ class DiT_with_autoenc_cond(DiT):
         # autoenc_cond: (N, K, D)
         # drop_ids: (N)
         # self.null_cond: (1, K, D)
-        autoenc_cond_drop = torch.where(drop_mask[:, :, None], autoenc_cond, self.null_cond)
+        batch_size = autoenc_cond.shape[0]
+        if drop_mask is None:
+            # randomly drop all conditions, for classifier-free guidance
+            if self.training:
+                drop_ids = (
+                    torch.rand(batch_size, 1, 1, device=autoenc_cond.device)
+                    < self.cond_drop_prob
+                )
+                autoenc_cond_drop = torch.where(drop_ids, self.null_cond, autoenc_cond)
+            else:
+                autoenc_cond_drop = autoenc_cond
+        else:
+            # randomly drop some conditions according to the drop_mask (N, K)
+            # True means keep
+            autoenc_cond_drop = torch.where(drop_mask[:, :, None], autoenc_cond, self.null_cond)
         return self.autoenc_cond_embedder(autoenc_cond_drop)
 
     def forward(self, x, t, autoenc_cond, drop_mask=None):
@@ -75,7 +90,7 @@ class DiT_with_autoenc_cond(DiT):
         # https://github.com/openai/glide-text2im/blob/main/notebooks/text2im.ipynb
         half = x[: len(x) // 2]
         combined = torch.cat([half, half], dim=0)
-        model_out = self.forward(combined, t, autoenc_cond, drop_mask, y)
+        model_out = self.forward(combined, t, autoenc_cond, drop_mask)
         eps, rest = model_out[:, :self.in_channels], model_out[:, self.in_channels:]
         cond_eps, uncond_eps = torch.split(eps, len(eps) // 2, dim=0)
         half_eps = uncond_eps + cfg_scale * (cond_eps - uncond_eps)
