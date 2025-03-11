@@ -25,6 +25,46 @@
         .section {
             margin-bottom: 40px;
         }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        th {
+            background: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -50,6 +90,26 @@
     </div>
 
     <div class="section">
+        <h2>Demo</h2>
+        <div style="margin-bottom: 20px;">
+            <iframe
+                src="https://tennant-semanticist-ar.hf.space"
+                frameborder="0"
+                width="850"
+                height="450"
+            ></iframe>
+        </div>
+        <div>
+            <iframe
+                src="https://tennant-semanticist-ar.hf.space"
+                frameborder="0"
+                width="850"
+                height="450"
+            ></iframe>
+        </div>
+    </div>
+
+    <div class="section">
         <h2>Key Contributions (What’s New?)</h2>
         <ul>
             <li><b>📌 PCA-Guided Tokenization:</b> Introduces a <i>causal ordering</i> where earlier tokens capture the most important visual details, reducing redundancy.</li>
@@ -66,8 +126,72 @@
             <li><b>🚨 Current Tokenizers:</b> More tokens simultaneously increase both <i>semantic content</i> and <i>low-level spectral details</i>, making compression inefficient.</li>
             <li><b>✅ Our Approach:</b> Tokens capture <i>semantics first</i>, ensuring a <i>coarse-to-fine</i> hierarchical structure.</li>
         </ul>
-        <p><b>📊 Power Spectrum Analysis (Visual)</b><br>➡️ <img src="figs/spectral_analysis.png"></p>
-        <p><b>🖼 Comparison of Reconstructions</b><br>➡️ <i>[Insert a figure comparing VQ-VAE, TiTok, and Semanticist reconstructions at different token levels]</i></p>
+        <!-- <p><b>🖼 Comparison of Reconstructions</b><br>️</p>  -->
+        <p><b>📊 Power Spectrum Analysis (Visual)</b><br></p>
+        <div class="img">
+            <img src="figs/spectral_titok_ours.jpg">
+        </div>
+        <p>This figure illustrates the <b>semantic-spectrum coupling effect</b> by comparing reconstructions from <b>TiTok</b> (top) and <b>our method (bottom)</b> using an increasing number of tokens.</p>
+
+        <ul>
+            <li><b>Top Row (TiTok):</b>
+                <ul>
+                    <li>As more tokens are added, <b>both semantic details and spectral power increase simultaneously</b>.</li>
+                    <li>The power spectrum (red: GT, blue: reconstructed) shifts upward, showing spectral entanglement.</li>
+                    <li>Earlier reconstructions fail to preserve semantic meaningful details.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul>
+            <li><b>Bottom Row (Ours - Semanticist):</b>
+                <ul>
+                    <li>Our method maintains <b>semantic clarity</b> even with fewer tokens.</li>
+                    <li>The power spectrum remains <b>consistent</b> with the original image across different token counts, confirming <b>spectral decoupling</b>.</li>
+                    <li>Reconstructions follow a <b>coarse-to-fine hierarchy</b>, mirroring the <b>global precedence effect</b> in human vision.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <p>This analysis demonstrates that <b>Semanticist produces a structured latent space</b> where tokens capture high-level semantic meaning first, avoiding spectral artifacts. The below figure gives more comparisons.</p>
+
+        <div class="img">
+            <img src="figs/spectral_analysis.png">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Model Architecture: Structured Visual Tokenization with a PCA-like Hierarchy</h1>
+
+            <p>Our model introduces a structured <strong>1D causal tokenization</strong> framework designed to efficiently encode images into a compact and semantically meaningful latent space. Unlike conventional tokenizers that encode images into a <strong>2D grid of latent vectors</strong>, our approach enforces a <strong>hierarchical PCA-like structure</strong>, where each token progressively refines the image representation in a coarse-to-fine manner.</p>
+
+            <h2>Key Components of Our Architecture</h2>
+
+            <h3>1. Causal ViT Encoder</h3>
+            <p>The encoding process begins with a <strong>Causal Vision Transformer (ViT) Encoder</strong>, which receives an input image and generates <strong>concept tokens</strong> in a 1D sequence. Unlike conventional <strong>2D latent spaces</strong>, these tokens are ordered <strong>causally</strong>, ensuring that earlier tokens capture the most salient semantic features, while later tokens refine details.</p>
+            <p>👉 See the figure below, where the encoder transforms the input image into a structured token sequence.</p>
+                <img src="figs/tokenizer.png" alt="Causal ViT Encoder Diagram" width="50%" class="center">
+
+            <h3>2. Nested Classifier-Free Guidance (CFG) for PCA-like Structure</h3>
+            <p>To enforce a PCA-like hierarchy, we apply a <strong>nested classifier-free guidance (CFG) strategy</strong>, where later tokens are progressively replaced with a <strong>null condition token</strong> during training. This forces earlier tokens to <strong>prioritize capturing the most critical information</strong>, leading to an interpretable, structured representation.</p>
+            <p>👉 The image above illustrates how nested CFG selectively refines token importance.</p>
+            <p>📚 This PCA-like structure is mathematically proved in our paper.</p>
+
+            <h3>3. Diffusion-Based DiT Decoder</h3>
+            <p>A <strong>Diffusion Transformer (DiT) Decoder</strong> reconstructs the image from these structured latent tokens. Unlike traditional deterministic decoders, our diffusion-based approach <strong>naturally follows a spectral autoregressive process</strong>, reconstructing images from low to high frequencies. This prevents <strong>semantic-spectrum coupling</strong>, ensuring that tokens encode high-level meaning instead of low-level artifacts.</p>
+            <p>👉 The figure below demonstrates how image reconstructions progressively improve as more tokens are used.</p>
+                <img src="figs/Token_PCA.png" alt="Token Reconstruction Diagram" width="50%" class="center">
+
+            <h2>Coarse-to-Fine Token Representation</h2>
+            <p>Our hierarchical tokenization closely resembles the <strong>global precedence effect</strong> in human vision, where broader structures are perceived before finer details. This property allows our tokenizer to <strong>adaptively reconstruct images</strong> with varying numbers of tokens, making it highly flexible for <strong>compression, image generation, and recognition tasks</strong>.</p>
+            <p>👉 As shown in the image above, increasing the number of tokens leads to progressively better reconstructions while maintaining structured information.</p>
+
+            <h2>Why Our Model is Different</h2>
+            <ul>
+                <li><strong>✔ 1D Causal Tokenization</strong> – Unlike 2D token grids, our model enforces an ordered structure where token importance follows a hierarchical pattern.</li>
+                <li><strong>✔ PCA-Like Variance Decay</strong> – Earlier tokens contain the most significant information, while later tokens refine details, mimicking PCA decomposition.</li>
+                <li><strong>✔ Diffusion-Based Decoding</strong> – Prevents <strong>semantic-spectrum entanglement</strong>, ensuring that tokens capture high-level meaning rather than low-level frequency artifacts.</li>
+            </ul>
     </div>
 
     <div class="section">
@@ -78,7 +202,241 @@
             <li><b>🎨 Better Generative Performance:</b> Autoregressive models trained on Semanticist tokens match leading baselines with fewer tokens.</li>
             <li><b>📈 Improved Interpretability:</b> PCA-like hierarchy aligns with human perception and enhances linear probing classification accuracy.</li>
         </ul>
-        <p><b>📝 Quantitative Results Table</b><br>➡️ <i>[Insert a table comparing FID, PSNR, and SSIM across methods]</i></p>
+        <p><b>📝 Quantitative Results Table</b><br></p> 
+        <div class="img">
+            <img src="figs/comp_table.jpg">
+        </div>
+        <!-- <table border="1">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>#Token</th>
+                    <th>Dim.</th>
+                    <th>VQ</th>
+                    <th>rFID↓</th>
+                    <th>PSNR↑</th>
+                    <th>SSIM↑</th>
+                    <th>Gen. Model</th>
+                    <th>Type</th>
+                    <th>#Token</th>
+                    <th>#Step</th>
+                    <th>gFID↓</th>
+                    <th>IS↑</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>MaskBit</td>
+                    <td>256</td>
+                    <td>12</td>
+                    <td>✔</td>
+                    <td>1.61</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>MaskBit</td>
+                    <td>Mask.</td>
+                    <td>256</td>
+                    <td>256</td>
+                    <td>1.52</td>
+                    <td>328.6</td>
+                </tr>
+                <tr>
+                    <td>RCG (cond.)</td>
+                    <td>1</td>
+                    <td>256</td>
+                    <td>✘</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>MAGE-L</td>
+                    <td>Mask.</td>
+                    <td>1</td>
+                    <td>20</td>
+                    <td>3.49</td>
+                    <td>215.5</td>
+                </tr>
+                <tr>
+                    <td>MAR</td>
+                    <td>256</td>
+                    <td>16</td>
+                    <td>✘</td>
+                    <td>1.22</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>MAR-L</td>
+                    <td>Mask.</td>
+                    <td>256</td>
+                    <td>64</td>
+                    <td>1.78</td>
+                    <td>296.0</td>
+                </tr>
+                <tr>
+                    <td>TiTok-S-128</td>
+                    <td>128</td>
+                    <td>16</td>
+                    <td>✔</td>
+                    <td>1.71</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>MaskGIT-L</td>
+                    <td>Mask.</td>
+                    <td>128</td>
+                    <td>64</td>
+                    <td>1.97</td>
+                    <td>281.8</td>
+                </tr>
+                <tr>
+                    <td>TiTok-L-32</td>
+                    <td>32</td>
+                    <td>8</td>
+                    <td>✔</td>
+                    <td>2.21</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>MaskGIT-L</td>
+                    <td>Mask.</td>
+                    <td>32</td>
+                    <td>8</td>
+                    <td>2.77</td>
+                    <td>194.0</td>
+                </tr>
+                <tr>
+                    <td>VQGAN</td>
+                    <td>256</td>
+                    <td>16</td>
+                    <td>✔</td>
+                    <td>7.94</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>Tam. Trans.</td>
+                    <td>AR</td>
+                    <td>256</td>
+                    <td>256</td>
+                    <td>5.20</td>
+                    <td>280.3</td>
+                </tr>
+                <tr>
+                    <td>ViT-VQGAN</td>
+                    <td>1024</td>
+                    <td>32</td>
+                    <td>✔</td>
+                    <td>1.28</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>VIM-L</td>
+                    <td>AR</td>
+                    <td>1024</td>
+                    <td>1024</td>
+                    <td>4.17</td>
+                    <td>175.1</td>
+                </tr>
+                <tr>
+                    <td>RQ-VAE</td>
+                    <td>256</td>
+                    <td>256</td>
+                    <td>✔</td>
+                    <td>3.20</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>RQ-Trans.</td>
+                    <td>AR</td>
+                    <td>256</td>
+                    <td>64</td>
+                    <td>3.80</td>
+                    <td>323.7</td>
+                </tr>
+                <tr>
+                    <td>VAR</td>
+                    <td>680</td>
+                    <td>32</td>
+                    <td>✔</td>
+                    <td>0.90</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>VAR-$d$16</td>
+                    <td>VAR</td>
+                    <td>680</td>
+                    <td>10</td>
+                    <td>3.30</td>
+                    <td>274.4</td>
+                </tr>
+                <tr>
+                    <td>ImageFolder</td>
+                    <td>286</td>
+                    <td>32</td>
+                    <td>✔</td>
+                    <td>0.80</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>VAR-$d$16</td>
+                    <td>VAR</td>
+                    <td>286</td>
+                    <td>10</td>
+                    <td>2.60</td>
+                    <td>295.0</td>
+                </tr>
+                <tr>
+                    <td>LlamaGen</td>
+                    <td>256</td>
+                    <td>8</td>
+                    <td>✔</td>
+                    <td>2.19</td>
+                    <td>20.79</td>
+                    <td>0.675</td>
+                    <td>LlamaGen-L</td>
+                    <td>AR</td>
+                    <td>256</td>
+                    <td>256</td>
+                    <td>3.80</td>
+                    <td>248.3</td>
+                </tr>
+                <tr>
+                    <td>CRT</td>
+                    <td>256</td>
+                    <td>8</td>
+                    <td>✔</td>
+                    <td>2.36</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>LlamaGen-L</td>
+                    <td>AR</td>
+                    <td>256</td>
+                    <td>256</td>
+                    <td>2.75</td>
+                    <td>265.2</td>
+                </tr>
+                <tr>
+                    <td>Causal MAR</td>
+                    <td>256</td>
+                    <td>16</td>
+                    <td>✘</td>
+                    <td>1.22</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>MAR-L</td>
+                    <td>AR</td>
+                    <td>256</td>
+                    <td>256</td>
+                    <td>4.07</td>
+                    <td>232.4</td>
+                </tr>
+                <tr>
+                    <td><strong>Semanticist w/ DiT-L</strong></td>
+                    <td>256</td>
+                    <td>16</td>
+                    <td>✘</td>
+                    <td>0.78</td>
+                    <td>21.61</td>
+                    <td>0.626</td>
+                    <td>AR</td>
+                    <td>32</td>
+                    <td>32</td>
+                    <td>2.57</td>
+                    <td>260.9</td>
+                </tr>
+            </tbody>
+        </table> -->
+
     </div>
 
     <div class="section">
@@ -100,8 +458,6 @@
     </div>
 
     <div class="section">
-        <h2>Resources</h2>
-        <p><a href="#">[Read the Paper]</a> &nbsp; | &nbsp; <a href="#">[GitHub Repository]</a> &nbsp; | &nbsp; <a href="#">[Colab Demo]</a></p>
         <p><b>Citation:</b> If you find our work useful, please cite us!</p>
         <p><i>[Insert BibTeX Citation Here]</i></p>
     </div>
