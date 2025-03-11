@@ -32,14 +32,15 @@
     <h3>A New Paradigm for Compact and Interpretable Image Representations</h3>
     <p>
         <a href="#">[Read the Paper]</a> &nbsp; | &nbsp;
-        <a href="#">[GitHub]</a> &nbsp; | &nbsp;
-        <a href="#">[Huggingface Demo]</a>
+        <a href="https://github.com/visual-gen/semanticist">[GitHub]</a> &nbsp; | &nbsp;
+        <a href="https://huggingface.co/spaces/tennant/semanticist_tokenizer">[Huggingface Tokenizer Demo]</a> &nbsp; | &nbsp;
+        <a href="https://huggingface.co/spaces/tennant/Semanticist_AR">[Huggingface Generation Demo]</a>
     </p>
 
     <div class="section">
         <h2>Introduction & Motivation</h2>
         <p>Deep generative models have revolutionized image synthesis, but how we tokenize visual data remains an open question. 
-        While classical methods like <b>Principal Component Analysis (PCA)</b> introduced compact, structured representations, modern <b>visual tokenizers</b>—from <b>VQ-VAE</b> to <b>latent diffusion models</b>—often prioritize <b>reconstruction fidelity</b> at the cost of interpretability and efficiency.</p>
+        While classical methods like <b>Principal Component Analysis (PCA)</b> introduced compact, structured representations, modern <b>visual tokenizers</b>—from <b>VQ-VAE</b> to <b>SD-VAE</b>—often prioritize <b>reconstruction fidelity</b> at the cost of interpretability and efficiency.</p>
         <h3>The Problem</h3>
         <ul>
             <li><b>Lack of Structure:</b> Tokens are arbitrarily learned, without an ordering that prioritizes important visual features first.</li>
@@ -53,7 +54,7 @@
         <ul>
             <li><b>📌 PCA-Guided Tokenization:</b> Introduces a <i>causal ordering</i> where earlier tokens capture the most important visual details, reducing redundancy.</li>
             <li><b>⚡ Semantic-Spectrum Decoupling:</b> Resolves the issue of semantic-spectrum coupling to ensure tokens focus on high-level semantic information.</li>
-            <li><b>🌀 Diffusion-Based Decoding:</b> Uses a <i>spectral autoregressive diffusion decoder</i> to naturally separate semantic and spectral content.</li>
+            <li><b>🌀 Diffusion-Based Decoding:</b> Uses a <i>diffusion decoder</i> for the spectral auto-regressive property to naturally separate semantic and spectral content.</li>
             <li><b>🚀 Compact & Interpretability-Friendly:</b> Enables <i>flexible token selection</i>, where fewer tokens can still yield high-quality reconstructions.</li>
         </ul>
     </div>
@@ -65,7 +66,7 @@
             <li><b>🚨 Current Tokenizers:</b> More tokens simultaneously increase both <i>semantic content</i> and <i>low-level spectral details</i>, making compression inefficient.</li>
             <li><b>✅ Our Approach:</b> Tokens capture <i>semantics first</i>, ensuring a <i>coarse-to-fine</i> hierarchical structure.</li>
         </ul>
-        <p><b>📊 Power Spectrum Analysis (Visual)</b><br>➡️ <i>[Insert a figure similar to your spectral analysis plot]</i></p>
+        <p><b>📊 Power Spectrum Analysis (Visual)</b><br>➡️ <img src="figs/spectral_analysis.png"></p>
         <p><b>🖼 Comparison of Reconstructions</b><br>➡️ <i>[Insert a figure comparing VQ-VAE, TiTok, and Semanticist reconstructions at different token levels]</i></p>
     </div>
 
