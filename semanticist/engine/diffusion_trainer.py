@@ -34,6 +34,7 @@ class DiffusionTrainer:
         warmup_epochs=100,
         warmup_steps=None,
         warmup_lr_init=0,
+        decay_steps=None,
         batch_size=32,
         eval_bs=32,
         test_bs=64,
@@ -130,7 +131,7 @@ class DiffusionTrainer:
             if self.accelerator.is_main_process:
                 print(f"Effective batch size is {effective_bs}")
 
-            self.g_optim = create_optimizer(self.model, weight_decay=0.05, learning_rate=lr, accelerator=self.accelerator)
+            self.g_optim = create_optimizer(self.model, weight_decay=0.05, learning_rate=lr,) # accelerator=self.accelerator)
             
             if warmup_epochs is not None:
                 warmup_steps = warmup_epochs * len(self.train_dl)
@@ -142,6 +143,7 @@ class DiffusionTrainer:
                 lr_min,
                 warmup_steps,
                 warmup_lr_init,
+                decay_steps,
                 cosine_lr
             )
             self.accelerator.register_for_checkpointing(self.g_sched)
@@ -232,7 +234,7 @@ class DiffusionTrainer:
             print(f"Loaded checkpoint from {ckpt_path}")
 
     def train(self, config=None):
-        n_parameters = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        n_parameters = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
         if self.accelerator.is_main_process:
             print(f"number of learnable parameters: {n_parameters//1e6}M")
         if config is not None:
@@ -293,7 +295,6 @@ class DiffusionTrainer:
                     self.accelerator.backward(loss)
                     if self.accelerator.sync_gradients and self.max_grad_norm is not None:
                         self.accelerator.clip_grad_norm_(self.model.parameters(), self.max_grad_norm)
-                    self.accelerator.unwrap_model(self.model).cancel_gradients_encoder(epoch)
                     self.g_optim.step()
                     if self.g_sched is not None:
                         self.g_sched.step_update(self.steps)
@@ -355,7 +356,7 @@ class DiffusionTrainer:
                         img = batch
 
                     with self.accelerator.autocast():
-                        rec = self.model(img, targets, sample=True, inference_with_n_slots=self.test_num_slots, cfg=1.0)
+                        rec = self.model(img, sample=True, inference_with_n_slots=self.test_num_slots, cfg=1.0)
                     imgs_and_recs = torch.stack((img.to(rec.device), rec), dim=0)
                     imgs_and_recs = rearrange(imgs_and_recs, "r b ... -> (b r) ...")
                     imgs_and_recs = imgs_and_recs.detach().cpu().float()
@@ -373,7 +374,7 @@ class DiffusionTrainer:
 
                     if self.cfg != 1.0:
                         with self.accelerator.autocast():
-                            rec = self.model(img, targets, sample=True, inference_with_n_slots=self.test_num_slots, cfg=self.cfg)
+                            rec = self.model(img, sample=True, inference_with_n_slots=self.test_num_slots, cfg=self.cfg)
 
                         imgs_and_recs = torch.stack((img.to(rec.device), rec), dim=0)
                         imgs_and_recs = rearrange(imgs_and_recs, "r b ... -> (b r) ...")
@@ -417,7 +418,7 @@ class DiffusionTrainer:
                         targets = targets.to(self.device, non_blocking=True)
 
                     with self.accelerator.autocast():
-                        recs = self.model(imgs, targets, sample=True, inference_with_n_slots=self.test_num_slots, cfg=cfg_value)
+                        recs = self.model(imgs, sample=True, inference_with_n_slots=self.test_num_slots, cfg=cfg_value)
 
                     psnr_val = psnr(recs, imgs, data_range=1.0)
                     ssim_val = ssim(recs, imgs, data_range=1.0)
