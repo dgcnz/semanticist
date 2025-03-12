@@ -1,7 +1,7 @@
 # "Principal Components" Enable A New Language of Images
 ### A New Paradigm for Compact and Interpretable Image Representations
 <a href="https://arxiv.org/abs/2503.08685">[Read the Paper]</a> &nbsp; | &nbsp;
-<a href="https://github.com/visual-gen/semanticist">[GitHub]</a> &nbsp; | &nbsp;
+<a href="https://visual-gen.github.io/semanticist/">[Project Page]</a> &nbsp; | &nbsp;
 <a href="https://huggingface.co/spaces/tennant/semanticist_tokenizer">[Huggingface Tokenizer Demo]</a> &nbsp; | &nbsp;
 <a href="https://huggingface.co/spaces/tennant/Semanticist_AR">[Huggingface Generation Demo]</a>
 
