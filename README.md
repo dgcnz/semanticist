@@ -107,7 +107,7 @@ It's possible that this code may not accurately replicate the results outlined i
 
 ## Acknowledgements
 
-Our codebase builds upon several existing publicly available codes. Specifically, we have modified or taken inspiration from the following repos: [DiT](https://github.com/facebookresearch/DiT), [SiT](https://github.com/willisma/SiT), [DiffAE](https://github.com/phizaz/diffae), [RCG](https://github.com/LTH14/rcg), [MAR](https://github.com/LTH14/mar), [REPA](https://github.com/sihyun-yu/REPA), etc. We thank the authors for their contributions to the community.
+Our codebase builds upon several existing publicly available codes. Specifically, we have modified or taken inspiration from the following repos: [DiT](https://github.com/facebookresearch/DiT), [SiT](https://github.com/willisma/SiT), [DiffAE](https://github.com/phizaz/diffae), [LlamaGen](https://github.com/FoundationVision/LlamaGen), [RCG](https://github.com/LTH14/rcg), [MAR](https://github.com/LTH14/mar), [REPA](https://github.com/sihyun-yu/REPA), etc. We thank the authors for their contributions to the community.
 
 ## Citation
 
