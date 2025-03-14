@@ -245,7 +245,7 @@ with gr.Blocks() as demo:
     # Add examples
     examples = [
         # ["0: tench, Tinca tinca", 0, True, 4.0, "1,2,4,8,16"],
-        ["1: goldfish, Carassius auratus", 1, True, 4.0, "1,2,4,8,16"],
+        ["1: goldfish", 1, True, 4.0, "1,2,4,8,16"],
         # ["2: great white shark, white shark", 2, True, 4.0, "1,2,4,8,16"],
     ]
     
