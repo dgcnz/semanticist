@@ -37,7 +37,7 @@ Can we design a **compact, structured tokenizer** that retains the benefits of P
 - **🌀 Diffusion-Based Decoding:** Uses a *diffusion decoder* for the spectral auto-regressive property to naturally separate semantic and spectral content.
 - **🚀 Compact & Interpretability-Friendly:** Enables *flexible token selection*, where fewer tokens can still yield high-quality reconstructions.
 
-For more details, please refer to our project page - [semanticist.github.io](https://semanticist.github.io/).
+For more details, please refer to our [project page](https://visual-gen.github.io/semanticist/).
 
 ## Getting Started
 
