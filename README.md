@@ -79,19 +79,19 @@ Note that caching is enabled by default and it takes around 400GB memory (dumped
 
 By default, when evaluating online we do not use the EMA model. Thus to obtain the final performance, you are suggested to perform a separate evaluation after training. Like above, our scripts are compatible with accelerate, torchrun, and submitit.
 ```bash
-accelerate launch --config_file=configs/onenode_config.yaml eval_net.py --model ./output/tokenizer/models_l --step 250000 --cfg_value 3.0 --test_num_slots 256
+accelerate launch --config_file=configs/onenode_config.yaml test_net.py --model ./output/tokenizer/models_l --step 250000 --cfg_value 3.0 --test_num_slots 32
 ```
 or
 ```bash
-torchrun --nproc-per-node=8 eval_net.py --model ./output/tokenizer/models_l --step 250000 --cfg_value 3.0 --test_num_slots 256
+torchrun --nproc-per-node=8 test_net.py --model ./output/tokenizer/models_l --step 250000 --cfg_value 3.0 --test_num_slots 32
 ```
 or
 ```bash
-python submitit_eval.py --ngpus=8 --nodes=1 --partition=xxx --model ./output/tokenizer/models_l --step 250000 --cfg_value 3.0 --test_num_slots 256
+python submitit_eval.py --ngpus=8 --nodes=1 --partition=xxx --model ./output/tokenizer/models_l --step 250000 --cfg_value 3.0 --test_num_slots 32
 ```
 And for the AR model:
 ```bash
-torchrun --nproc-per-node=8 eval_net.py --model ./output/autoregressive/models_l --step 250000 --cfg_value 6.0 --ae_cfg 1.0 --test_num_slots 256
+torchrun --nproc-per-node=8 test_net.py --model ./output/autoregressive/models_l --step 250000 --cfg_value 6.0 --ae_cfg 1.0 --test_num_slots 32
 ```
 If `enable_ema` is set to True, the EMA model will be loaded automatically. You can adjust the number of GPUs flexibly. You can also specify multiple arguments in the command line to perform a grid search.
 
