@@ -147,9 +147,12 @@ class DiffusionTrainer:
                 cosine_lr
             )
             self.accelerator.register_for_checkpointing(self.g_sched)
-            self.model, self.g_optim, self.g_sched = self.accelerator.prepare(self.model, self.g_optim, self.g_sched)
+            if test_dataset is not None:
+                self.model, self.g_optim, self.g_sched, self.test_dl = self.accelerator.prepare(self.model, self.g_optim, self.g_sched, self.test_dl)
+            else:
+                self.model, self.g_optim, self.g_sched = self.accelerator.prepare(self.model, self.g_optim, self.g_sched)
         else:
-           self.model, self.test_dl = self.accelerator.prepare(self.model, self.test_dl)
+            self.model, self.test_dl = self.accelerator.prepare(self.model, self.test_dl)
 
         self.steps = 0
         self.loaded_steps = -1
