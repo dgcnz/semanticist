@@ -115,7 +115,7 @@ If you find this work useful in your research, please consider citing us!
 
 ```bibtex
 @article{semanticist,
-    title={``Principal Components'' Enable A New Language of Images},
+    title={``{P}rincipal Components'' Enable A New Language of Images},
     author={Wen, Xin and Zhao, Bingchen and Elezi, Ismail and Deng, Jiankang and Qi, Xiaojuan},
     journal={arXiv preprint arXiv:2503.08685},
     year={2025}
