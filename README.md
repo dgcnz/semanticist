@@ -1,5 +1,5 @@
 # "Principal Components" Enable A New Language of Images
-### A New Paradigm for Compact and Interpretable Image Representations
+### (ICCV 2025) A New Paradigm for Compact and Interpretable Image Representations
 <a href="https://arxiv.org/abs/2503.08685">[Read the Paper]</a> &nbsp; | &nbsp;
 <a href="https://visual-gen.github.io/semanticist/">[Project Page]</a> &nbsp; | &nbsp;
 <a href="https://huggingface.co/spaces/tennant/semanticist_tokenizer">[Huggingface Tokenizer Demo]</a> &nbsp; | &nbsp;
@@ -14,8 +14,9 @@
 <small><sup>*</sup> Equal Contribution &nbsp;</small>
 <br/>
     <sup>1</sup> University of Hong Kong &nbsp; | &nbsp;
-    <sup>2</sup> University of Edinburgh &nbsp; | &nbsp;
-    <sup>3</sup> Noah's Ark Lab &nbsp; | &nbsp;
+    <sup>2</sup> University of Edinburgh
+<br/>
+    <sup>3</sup> Huawei London Research Centre &nbsp; | &nbsp;
     <sup>4</sup> Imperial College London
 
 ![Semanticist Teaser](pages/figs/teaser.jpg)
@@ -43,7 +44,7 @@ For more details, please refer to our [project page](https://visual-gen.github.i
 
 ### Preparation
 
-First please makesure pytorch is installed (we used 2.5.1 but we expect any version >= 2.0 to work).
+First please make sure pytorch is installed (we used 2.5.1 but we expect any version >= 2.0 to work).
 
 Then install the rest of the dependencies.
 
@@ -114,10 +115,10 @@ Our codebase builds upon several existing publicly available codes. Specifically
 If you find this work useful in your research, please consider citing us!
 
 ```bibtex
-@article{semanticist,
+@inproceedings{semanticist,
     title={``{P}rincipal Components'' Enable A New Language of Images},
     author={Wen, Xin and Zhao, Bingchen and Elezi, Ismail and Deng, Jiankang and Qi, Xiaojuan},
-    journal={arXiv preprint arXiv:2503.08685},
+    booktitle={IEEE/CVF International Conference on Computer Vision (ICCV)},
     year={2025}
 }
 ```
