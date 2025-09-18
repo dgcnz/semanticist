@@ -11,7 +11,7 @@ from semanticist.engine.trainer_utils import instantiate_from_config
 from semanticist.stage1.diffuse_slot import DiffuseSlot
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-ckpt_path = hf_hub_download(repo_id='tennant/semanticist', filename='semanticist_tok_XL.pkl', cache_dir='/mnt/ceph_rbd/mnt_pvc_vid_data/zbc/cache/')
+ckpt_path = hf_hub_download(repo_id='tennant/semanticist', filename='semanticist_tok_XL.pkl', cache_dir='.cache')
 config_path = 'configs/tokenizer_xl.yaml'
 cfg = OmegaConf.load(config_path)
 ckpt = torch.load(ckpt_path, map_location='cpu')

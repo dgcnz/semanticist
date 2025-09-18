@@ -10,3 +10,8 @@ build
 *.ttf
 *.so
 .nfs*
+.gradio
+*.png
+.cache
+runs
+_tickets
